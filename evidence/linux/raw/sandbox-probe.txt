@@ -2,5 +2,5 @@
   "exit": 0,
   "stdout": "sandbox-ok\n",
   "stderr": "",
-  "seconds": 0.15
+  "seconds": 0.25
 }

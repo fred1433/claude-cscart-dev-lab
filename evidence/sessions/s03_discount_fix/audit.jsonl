@@ -1,1 +1,2 @@
-{"event": "SessionStart", "policy_sha256_16": "904707134598ba2b", "session": "a7c93caa-cdd9-4044-8115-3d1691f174a2", "time": "2026-10-11T10:59:21-0300"}
+{"event": "SessionStart", "policy_sha256_16": "904707134598ba2b", "session": "6a7ad4f0-66b7-4569-afe6-1480a27f9c4b", "time": "2026-10-11T11:23:04-0300"}
+{"decision": "block", "event": "PreToolUse", "input": {"command": "grep -n \"lab_apply_discount\" -r app | head; grep -n -A25 \"function lab_apply_discount\" app/functions/fn.cart.php"}, "policy_sha256_16": "904707134598ba2b", "reason": "the command mentions 'fn.cart.php', a protected area.", "session": "6a7ad4f0-66b7-4569-afe6-1480a27f9c4b", "target": "", "time": "2026-10-11T11:23:09-0300", "tool": "Bash"}

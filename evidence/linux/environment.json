@@ -7,7 +7,7 @@
     "no_model_credentials_in_env": true,
     "evidence_dir_mode_700_root": true
   },
-  "uname": "Linux 8b91b2718608 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026 aarch64 GNU/Linux",
+  "uname": "Linux 59060a280ab6 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026 aarch64 GNU/Linux",
   "os_release": "Debian GNU/Linux 12 (bookworm)",
   "bubblewrap": "bubblewrap 0.8.0",
   "socat": "socat version 1.7.4.4 on 06 Nov 2022 08:15:51",
@@ -96,7 +96,7 @@
   },
   "weaker_nested_sandbox": true,
   "mounts": [
-    "overlay overlay rw,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/185/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/179/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/176/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/175/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/171/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/167/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/138/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/13/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/9/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/6/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/5/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/4/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/2/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/186/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/186/work,nouserxattr @ /",
+    "overlay overlay rw,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/210/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/204/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/201/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/200/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/196/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/192/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/138/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/13/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/10/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/9/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/6/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/5/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/4/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/3/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/2/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/211/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/211/work,nouserxattr @ /",
     "proc proc rw @ /proc",
     "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /dev",
     "devpts devpts rw,gid=5,mode=620,ptmxmode=666 @ /dev/pts",

@@ -15,6 +15,12 @@ approving a change without fully reading it.
 Not contained: someone acting as the server administrator. An admin can
 change any policy file; that is by design.
 
+Isolating production and keeping Claude inside a task's file list are two
+different guarantees. The first rests on Unix permissions and MySQL grants
+and holds whatever runs. The second binds Claude's file tools only; shell
+commands are covered by the owner's approval rule (owner guide, step 3) and by
+`bin/claude-task diff`/`undo`, which report changes outside the task.
+
 Two separate requirements, tested separately:
 
 1. **No authority over production**: the dev identity cannot write the
@@ -32,7 +38,7 @@ Two separate requirements, tested separately:
 | `CLAUDE.md` | Nothing. It is guidance; the model usually follows it (see the "operating config" sessions). | Anything, if the model ignores or misreads it. |
 | Permission deny rules (`settings.json`) | Claude Code's file tools on listed paths, in every mode. Recognised shell file commands (`cat`, `sed`, redirects) on those paths. | A Python or Node script that opens the file itself (documented). |
 | Guard (`.claude/guard/guard.py`, a PreToolUse hook) | Edits with Claude's file tools outside the open task, edits to protected files, reads of secrets, shell commands naming DB clients, servers, network tools, protected paths, git history/branch commands or `bin/claude-task start/undo/finish`, `..` escapes. Readable messages. | Anything written so its text does not match (`'app/pay'+'ments'`, `c=my; ${c}sql`). It is a text filter, not a shell parser. **The task's file list binds the file tools only**: a shell command such as `sed -i` on an unprotected file outside the task passes the guard and the sandbox. `bin/claude-task diff` and `undo` report it (WARNING / NOT UNDONE); they do not prevent it. |
-| Sandbox (`sandbox.*`) | Bash and every child process: writes outside the dev copy and to protected paths, reads of `config.local.php` and `~/.ssh`, all network. | Claude Code's own file tools and hooks (they run outside it; the deny rules and guard cover them). |
+| Sandbox (`sandbox.*`) | Bash and every child process: writes outside the dev copy and to protected paths, reads of `config.local.php` and `~/.ssh`. Network: with no allowed domain, every outbound attempt in our `dontAsk` runs was refused. | Claude Code's own file tools and hooks (they run outside it; the deny rules and guard cover them). In manual mode a new destination can be offered to the human as a permission question: a "Yes" opens it. A fixed network ban needs `sandbox.network.strictAllowlist`, honoured only in user, managed or command-line settings (admin mode below sets it). The owner guide says to answer No to network requests. |
 | Unix permissions and MySQL grants | The dev identity, whatever program it runs, Claude or not. | Nothing below the admin. This is the real boundary. |
 
 The recorded runs show each layer separately, including cases where an
@@ -54,9 +60,14 @@ Check these on the real dev copy. None of them can be checked from this lab.
   marketplace syncs. A dev copy that can still send real emails or real API
   calls is a risk even if Claude never touches the database.
 - **Database rights**: the dev application's MySQL account should have grants
-  on the dev schema only. Check with `SHOW GRANTS FOR 'user'@'host';` and try
-  one forbidden statement on the production schema: you want an *access
-  denied* error (1142 or 1044), not a *can't connect* error.
+  on the dev schema only. Inspect the real account's grants with
+  `SHOW GRANTS FOR 'user'@'host';`. Run destructive permission tests only
+  against disposable synthetic tables (for example a throwaway schema created
+  for the test, as the Linux proofs do with `shop_prod.lab_orders`). Any
+  diagnostic against the real production schema must remain non-mutating even
+  if access is unexpectedly allowed: a read such as `SELECT 1 FROM
+  <prod_schema>.<table> LIMIT 0` is enough to see an *access denied* error
+  (1142 or 1044) rather than a *can't connect* error.
 
 ## 4. Two topologies
 
@@ -91,21 +102,26 @@ printf 'config.local.php\nvar/\nimages/\n.claude/task.json\n.claude-task-trash/\
 # 2. copy the kit
 cp -R /path/to/lab/kit/.claude /path/to/lab/kit/CLAUDE.md .
 mkdir -p bin && cp /path/to/lab/kit/bin/claude-task bin/
-# 3. check that config.local.php is ignored, then commit the code and the rules together
+# 3. adapt the policy installed here (protected and shared files, secrets,
+#    production path), then generate the settings FROM THAT FILE
+"${EDITOR:-nano}" .claude/guard/policy.json
+python3 /path/to/lab/kit/admin/build_settings.py --policy .claude/guard/policy.json --out .claude/settings.json
+# 4. stop unless config.local.php is ignored AND not already tracked
 git init                      # only if the copy is not under git yet
-git status --ignored | grep config.local.php
+git check-ignore -q config.local.php || { echo "STOP: config.local.php is not ignored"; exit 1; }
+if git ls-files --error-unmatch config.local.php >/dev/null 2>&1; then
+  echo "STOP: config.local.php is already tracked; remove it from the index (git rm --cached) and rotate the password"; exit 1
+fi
+# 5. commit the code and the rules together
 git add -A && git commit -m "baseline before Claude Code, with the Claude Code rules"
 ```
 
-The rules are now versioned with the code, so you and the owner work with the
-same ones.
-
-Then adapt the one policy file, `.claude/guard/policy.json` (protected paths,
-secret files, production path), and regenerate the settings from it:
-
-```
-python3 /path/to/lab/kit/admin/build_settings.py   # in the lab, then copy settings.json again
-```
+Run it line by line, or paste it into a script: the `exit 1` lines are there
+to stop before `git add` if the secret would be committed. The rules are then
+versioned with the code, so you and the owner work with the same ones. Each
+time you change `policy.json`, run step 3's `build_settings.py` line again: the
+guard reads the policy directly, but the permission deny rules and the
+sandbox's protected paths come from the generated `settings.json`.
 
 Two behaviours seen in our own runs:
 
@@ -124,10 +140,10 @@ the policy where the dev account can read but not write it:
 ```
 sudo mkdir -p /opt/claude-cscart-guard /etc/claude-code
 sudo cp kit/.claude/guard/guard.py /opt/claude-cscart-guard/
-# policy.json with "project_root": "/abs/path/to/dev", "production_roots": ["/abs/path/to/prod"]
+# the adapted policy.json, with "project_root": "/abs/path/to/dev", "production_roots": ["/abs/path/to/prod"]
 sudo cp policy.json /opt/claude-cscart-guard/
-python3 kit/admin/build_settings.py --managed /abs/path/to/dev /opt/claude-cscart-guard \
-  | sudo tee /etc/claude-code/managed-settings.json
+python3 kit/admin/build_settings.py --policy /opt/claude-cscart-guard/policy.json \
+  --managed /abs/path/to/dev /opt/claude-cscart-guard | sudo tee /etc/claude-code/managed-settings.json
 sudo chmod 755 /opt/claude-cscart-guard /etc/claude-code
 sudo chmod 644 /opt/claude-cscart-guard/* /etc/claude-code/managed-settings.json
 ```
@@ -187,7 +203,12 @@ never writes a broad deny with a narrow allow exception: the task's file list
   convenience, not a security boundary.
 - **One branch per task**, created by `bin/claude-task start`, with the same
   rules versioned in the repository for both of you.
-- **Undo is task-scoped and does not hide anything**: `bin/claude-task undo`
+- **Keep is task-scoped too**: `bin/claude-task finish` commits exactly the
+  task's files, deletions included, with `git commit --only`; anything staged
+  for other files stays staged and out of the commit; if a task file is still
+  uncommitted afterwards, the task stays open (tests in
+  `tests/test_task_undo.py`).
+- **Undo is task-scoped and reports what it does not undo**: `bin/claude-task undo`
   restores only the task's files to the baseline blob hashes and never runs
   `git reset --hard` or `git clean`. It compares the whole `git status` with
   the snapshot taken at `start`: any other file changed or created since then

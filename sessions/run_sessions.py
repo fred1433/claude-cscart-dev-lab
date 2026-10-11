@@ -168,6 +168,10 @@ def s01_walkthrough(ws, out):
     steps.append(task(ws, "start", "catalog-form-mobile", STYLES))
     runs.append(claude(ws, out, "Go ahead: make only this change, in that one file.", "default",
                        allowed="Edit(%s)" % STYLES, resume=sid, label="-3-edit"))
+    runs.append(claude(ws, out, "I looked at the phone preview. Check the interest checkboxes at 375 px: each "
+                       "checkbox must stay on the same line as its own label, one option per line. Adjust the same "
+                       "file if needed, and only that file.", "default", allowed="Edit(%s)" % STYLES, resume=sid,
+                       label="-3b-review"))
     steps.append(task(ws, "diff"))
     os.makedirs(os.path.join(out, "preview"), exist_ok=True)
     subprocess.run([sys.executable, os.path.join(LAB, "tools", "render_preview.py"), ws,

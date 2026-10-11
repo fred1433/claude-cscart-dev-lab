@@ -1,29 +1,32 @@
 #!/usr/bin/env python3
-"""Build Claude Code settings from the one policy file.
+"""Build Claude Code settings from a policy file, named explicitly.
 
-Project mode (default) writes kit/.claude/settings.json, used inside the dev copy.
+Always pass the policy you actually use (the one installed in the dev copy, or
+the admin-installed one), never rely on the lab's copy.
+
+Project mode writes a settings.json for the dev copy:
+    python3 build_settings.py --policy .claude/guard/policy.json --out .claude/settings.json
+
 Managed mode prints a managed-settings.json for /etc/claude-code/ with absolute
 paths, for a shared server where the developer account must not be able to
-change the rules (see docs/developer-guide.md, "Admin install").
+change the rules (see docs/developer-guide.md, "Shared server"):
+    python3 build_settings.py --policy /opt/claude-cscart-guard/policy.json \
+        --managed /srv/dev/shop /opt/claude-cscart-guard
 
-    python3 kit/admin/build_settings.py
-    python3 kit/admin/build_settings.py --managed /srv/dev/shop /opt/claude-cscart-guard
+Policy paths: "relative/path" is relative to the dev copy, "/absolute/path" is
+absolute, "~/path" is in the home folder, "**/x" matches anywhere.
 """
 import json
-import os
 import sys
 
-HERE = os.path.dirname(os.path.realpath(__file__))
-KIT = os.path.dirname(HERE)
-POLICY = os.path.join(KIT, ".claude", "guard", "policy.json")
 
 
 def rule(tool, pattern, root):
-    if pattern.startswith("~/"):
+    if pattern.startswith("~/") or pattern.startswith("**/"):
         return "%s(%s)" % (tool, pattern)
-    if pattern.startswith("**/"):
-        return "%s(%s)" % (tool, pattern)
-    if root:  # managed settings: absolute paths are written with a leading //
+    if pattern.startswith("/"):  # absolute in the policy: Claude Code writes absolute paths with a leading //
+        return "%s(/%s)" % (tool, pattern)
+    if root:  # managed settings: relative policy paths become absolute under the dev copy
         return "%s(/%s/%s)" % (tool, root.rstrip("/"), pattern)
     return "%s(/%s)" % (tool, pattern)  # project settings: /path = relative to the project root
 
@@ -68,18 +71,30 @@ def build(policy, root=None, guard_dir=None):
 
 
 def main(argv):
-    with open(POLICY) as handle:
-        policy = json.load(handle)
-    if argv[:1] == ["--managed"] and len(argv) == 3:
-        print(json.dumps(build(policy, argv[1], argv[2]), indent=2))
-        return 0
-    if argv:
+    args = list(argv)
+    policy_path = out = managed = None
+    while args:
+        flag = args.pop(0)
+        if flag == "--policy" and args:
+            policy_path = args.pop(0)
+        elif flag == "--out" and args:
+            out = args.pop(0)
+        elif flag == "--managed" and len(args) >= 2:
+            managed = (args.pop(0), args.pop(0))
+        else:
+            sys.stderr.write(__doc__)
+            return 1
+    if not policy_path or bool(out) == bool(managed):
         sys.stderr.write(__doc__)
         return 1
-    target = os.path.join(KIT, ".claude", "settings.json")
-    with open(target, "w") as handle:
+    with open(policy_path) as handle:
+        policy = json.load(handle)
+    if managed:
+        print(json.dumps(build(policy, managed[0], managed[1]), indent=2))
+        return 0
+    with open(out, "w") as handle:
         handle.write(json.dumps(build(policy), indent=2) + "\n")
-    print("wrote", os.path.relpath(target, os.getcwd()))
+    print("wrote %s from %s" % (out, policy_path))
     return 0
 
 

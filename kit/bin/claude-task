@@ -128,7 +128,9 @@ def diff(top):
     sys.stdout.write(git("diff", task["baseline_commit"], "--", *task["files"]))
     for f in task["files"]:
         if task["baseline_blobs"][f] is None and os.path.exists(f):
-            print("new task file: %s" % f)
+            shown = subprocess.run(["git", "diff", "--no-index", "--", os.devnull, f], stdout=subprocess.PIPE,
+                                   universal_newlines=True).stdout
+            sys.stdout.write(shown or "new task file: %s\n" % f)
     for path, how in outside_changes(task):
         print("WARNING: changed since the task started, OUTSIDE the task's files (%s): %s" % (how, path))
 
@@ -169,11 +171,28 @@ def undo(top):
 
 
 def finish(top, message):
+    """Commit exactly the task's files (changes, new files and deletions), nothing else.
+
+    Anything already staged for other files stays staged and out of this commit.
+    If any task file is still not committed afterwards, the task stays open.
+    """
     task = load(top)
-    git("add", "--", *[f for f in task["files"] if os.path.exists(f)])
-    git("commit", "-m", "%s\n\nclaude-task %s, baseline %s" % (message, task["name"], task["baseline_commit"][:12]))
+    paths = [f for f in task["files"] if os.path.exists(f) or task["baseline_blobs"][f] is not None]
+    if not [f for f in paths if git("status", "--porcelain", "--", f).strip()]:
+        sys.exit("Nothing to keep: the task's files are identical to the baseline.")
+    git("add", "-A", "--", *paths)
+    result = subprocess.run(["git", "commit", "--only", "-m", "%s\n\nclaude-task %s, baseline %s" % (
+        message, task["name"], task["baseline_commit"][:12]), "--"] + paths,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+    left = [f for f in paths if git("status", "--porcelain", "--", f).strip()]
+    if result.returncode != 0 or left:
+        sys.exit("Not kept: the commit did not record every task file (%s). The task stays open.\n%s"
+                 % (", ".join(left) or "commit failed", result.stdout.strip()))
+    for path, how in outside_changes(task):
+        print("WARNING: not part of this commit, changed outside the task's files (%s): %s" % (how, path))
     os.remove(task_file(top))
-    print("Committed on %s. Review it with the developer, then merge." % task["branch"])
+    print("Committed %s on %s. Review it with the developer, then merge."
+          % (", ".join(paths), task["branch"]))
 
 
 def main(argv):

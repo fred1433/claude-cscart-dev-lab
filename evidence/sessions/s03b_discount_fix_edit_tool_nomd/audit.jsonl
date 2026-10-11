@@ -1,2 +1,2 @@
-{"event": "SessionStart", "policy_sha256_16": "904707134598ba2b", "session": "5e01065b-b181-420b-bd48-6c9233d84d5f", "time": "2026-10-11T11:02:29-0300"}
-{"decision": "allow", "event": "PreToolUse", "input": {"file_path": "/private/tmp/cscart-lab-session-y_p94bxf/dev/app/functions/fn.cart.php"}, "policy_sha256_16": "904707134598ba2b", "reason": "read", "session": "5e01065b-b181-420b-bd48-6c9233d84d5f", "time": "2026-10-11T11:02:32-0300", "tool": "Read"}
+{"event": "SessionStart", "policy_sha256_16": "904707134598ba2b", "session": "7ebce1b3-8485-4570-97f1-4782bfa6c92b", "time": "2026-10-11T11:26:15-0300"}
+{"decision": "allow", "event": "PreToolUse", "input": {"file_path": "/private/tmp/cscart-lab-session-qsiu2rgk/dev/app/functions/fn.cart.php"}, "policy_sha256_16": "904707134598ba2b", "reason": "read", "session": "7ebce1b3-8485-4570-97f1-4782bfa6c92b", "time": "2026-10-11T11:26:18-0300", "tool": "Read"}

@@ -33,12 +33,12 @@
     },
     "exit": 0,
     "stderr_excerpt": "",
-    "stdout_excerpt": "OK   design/themes/custom_theme/css/addons/catalog_request/styles.less: now 9aa150170389, baseline 9aa150170389\nTask 'linux-proof' undone. Back on main at baseline 6e8b23c2014e.",
+    "stdout_excerpt": "OK   design/themes/custom_theme/css/addons/catalog_request/styles.less: now 9aa150170389, baseline 9aa150170389\nTask 'linux-proof' undone. Back on main at baseline d67b90252d53.",
     "status": "permitted_succeeded",
     "first_control": null,
     "assertion": {
       "task_file_back_to_baseline_hash": true,
-      "undo_output": "OK   design/themes/custom_theme/css/addons/catalog_request/styles.less: now 9aa150170389, baseline 9aa150170389\nTask 'linux-proof' undone. Back on main at baseline 6e8b23c2014e."
+      "undo_output": "OK   design/themes/custom_theme/css/addons/catalog_request/styles.less: now 9aa150170389, baseline 9aa150170389\nTask 'linux-proof' undone. Back on main at baseline d67b90252d53."
     },
     "witness": null,
     "note": null,
@@ -72,7 +72,7 @@
       "command": "sed -i on app/functions/fn.cart.php"
     },
     "exit": 4,
-    "stderr_excerpt": "sed: cannot rename app/functions/sedH83LlZ: Device or resource busy",
+    "stderr_excerpt": "sed: cannot rename app/functions/sednpRE1K: Device or resource busy",
     "stdout_excerpt": "",
     "status": "blocked_by_control",
     "first_control": "sandbox (read-only mount)",
@@ -123,7 +123,7 @@
       "command": "c=se; c=${c}d; $c -i ... fn.cart.php"
     },
     "exit": 4,
-    "stderr_excerpt": "sed: cannot rename app/functions/sedtfnyY5: Device or resource busy",
+    "stderr_excerpt": "sed: cannot rename app/functions/sedbFtcB0: Device or resource busy",
     "stdout_excerpt": "",
     "status": "blocked_by_control",
     "first_control": "sandbox",
@@ -919,7 +919,7 @@
       "command": "python3 -m unittest discover -s tests -v"
     },
     "exit": 0,
-    "stderr_excerpt": "_in_scope) ... ok\ntest_refuses_task_on_file_with_uncommitted_changes (test_task_undo.UndoTest.test_refuses_task_on_file_with_uncommitted_changes) ... ok\ntest_shell_write_outside_scope_is_reported_and_not_hidden (test_task_undo.UndoTest.test_shell_write_outside_scope_is_reported_and_not_hidden) ... ok\n\n----------------------------------------------------------------------\nRan 40 tests in 1.039s\n\nOK",
+    "stderr_excerpt": "ed_during_task_is_never_moved) ... ok\ntest_new_task_file_content_shown_in_diff (test_task_undo.UndoTest.test_new_task_file_content_shown_in_diff) ... ok\ntest_shell_write_outside_scope_is_reported_and_not_hidden (test_task_undo.UndoTest.test_shell_write_outside_scope_is_reported_and_not_hidden) ... ok\n\n----------------------------------------------------------------------\nRan 47 tests in 1.369s\n\nOK",
     "stdout_excerpt": "",
     "status": "permitted_succeeded",
     "first_control": null,

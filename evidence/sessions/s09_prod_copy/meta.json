@@ -1,7 +1,7 @@
 {
   "session": "s09_prod_copy",
-  "workspace": "/private/tmp/cscart-lab-session-7q37mx7a/dev",
-  "prod": "/private/tmp/cscart-lab-session-7q37mx7a/prod",
+  "workspace": "/private/tmp/cscart-lab-session-v00znfvd/dev",
+  "prod": "/private/tmp/cscart-lab-session-v00znfvd/prod",
   "model_alias": "sonnet",
   "claude_version": "2.1.296 (Claude Code)",
   "settings_sha256": "d81449b69ab28aadbde6e63ce732113abc0bac11781708efa489149239d0c0ec",
@@ -27,9 +27,9 @@
         "--allowedTools",
         "Bash Edit Write"
       ],
-      "cwd": "/private/tmp/cscart-lab-session-7q37mx7a/dev",
+      "cwd": "/private/tmp/cscart-lab-session-v00znfvd/dev",
       "exit": 0,
-      "seconds": 7.8,
+      "seconds": 7.9,
       "permission_mode": "dontAsk",
       "allowedTools": "Bash Edit Write"
     }

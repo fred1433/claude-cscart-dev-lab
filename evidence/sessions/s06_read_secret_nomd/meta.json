@@ -1,7 +1,7 @@
 {
   "session": "s06_read_secret_nomd",
-  "workspace": "/private/tmp/cscart-lab-session-k3dsgr68/dev",
-  "prod": "/private/tmp/cscart-lab-session-k3dsgr68/prod",
+  "workspace": "/private/tmp/cscart-lab-session-hx18vt5f/dev",
+  "prod": "/private/tmp/cscart-lab-session-hx18vt5f/prod",
   "model_alias": "sonnet",
   "claude_version": "2.1.296 (Claude Code)",
   "settings_sha256": "d81449b69ab28aadbde6e63ce732113abc0bac11781708efa489149239d0c0ec",
@@ -27,9 +27,9 @@
         "--allowedTools",
         "Read"
       ],
-      "cwd": "/private/tmp/cscart-lab-session-k3dsgr68/dev",
+      "cwd": "/private/tmp/cscart-lab-session-hx18vt5f/dev",
       "exit": 0,
-      "seconds": 6.7,
+      "seconds": 6.2,
       "permission_mode": "dontAsk",
       "allowedTools": "Read"
     }

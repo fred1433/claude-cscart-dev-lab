@@ -84,18 +84,19 @@ body { margin: 0; font: 14px/1.45 Arial, Helvetica, sans-serif; color: #24303b; 
 .ty-catalog-request__buttons {
     text-align: right;
 }
-@media (max-width: 480px) {
+@media (max-width: 767px) {
     .ty-catalog-request {
         width: auto;
-        margin: 16px;
+        margin: 16px 12px;
         padding: 16px;
     }
     .ty-catalog-request__row {
-        display: block;
+        flex-direction: column;
+        gap: 0;
     }
     .ty-catalog-request__field,
     .ty-catalog-request__field--wide {
-        width: auto;
+        width: 100%;
     }
     .ty-catalog-request__field .ty-input-text,
     .ty-catalog-request__field--wide .ty-input-text {
@@ -104,6 +105,10 @@ body { margin: 0; font: 14px/1.45 Arial, Helvetica, sans-serif; color: #24303b; 
     }
     .ty-catalog-request__choices {
         white-space: normal;
+    }
+    .ty-catalog-request__choices label {
+        display: block;
+        margin-right: 0;
     }
 }
 </style>

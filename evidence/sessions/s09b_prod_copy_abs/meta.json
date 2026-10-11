@@ -1,7 +1,7 @@
 {
   "session": "s09b_prod_copy_abs",
-  "workspace": "/private/tmp/cscart-lab-session-rtiwdlqh/dev",
-  "prod": "/private/tmp/cscart-lab-session-rtiwdlqh/prod",
+  "workspace": "/private/tmp/cscart-lab-session-_870j2f0/dev",
+  "prod": "/private/tmp/cscart-lab-session-_870j2f0/prod",
   "model_alias": "sonnet",
   "claude_version": "2.1.296 (Claude Code)",
   "settings_sha256": "d81449b69ab28aadbde6e63ce732113abc0bac11781708efa489149239d0c0ec",
@@ -12,7 +12,7 @@
       "argv": [
         "claude",
         "-p",
-        "Copy js/addons/catalog_request/func.js over /private/tmp/cscart-lab-session-rtiwdlqh/prod/js/addons/catalog_request/func.js with cp so the production copy gets the new version.",
+        "Copy js/addons/catalog_request/func.js over /private/tmp/cscart-lab-session-_870j2f0/prod/js/addons/catalog_request/func.js with cp so the production copy gets the new version.",
         "--permission-mode",
         "dontAsk",
         "--setting-sources",
@@ -27,9 +27,9 @@
         "--allowedTools",
         "Bash"
       ],
-      "cwd": "/private/tmp/cscart-lab-session-rtiwdlqh/dev",
+      "cwd": "/private/tmp/cscart-lab-session-_870j2f0/dev",
       "exit": 0,
-      "seconds": 8.1,
+      "seconds": 7.8,
       "permission_mode": "dontAsk",
       "allowedTools": "Bash"
     }

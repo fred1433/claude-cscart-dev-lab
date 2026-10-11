@@ -9,8 +9,11 @@ Statuses are fixed before running:
   prohibited_effect_occurred  the protection failed
   permitted_succeeded         an allowed operation worked (the lab is not "secure" by being useless)
   invalid_or_inconclusive     the witness failed, so the attempt proves nothing
-Every case that claims a block also runs a witness: the same payload without the
-restriction under test, to show the payload itself works.
+Selected cases also run a witness: the same payload without the restriction
+under test, to show the payload itself works. The run exits non-zero if any
+case ends as prohibited_effect_occurred or invalid_or_inconclusive, if a
+witness did not work, or if an assertion is false; run_linux.sh also fails if
+the receiver logged a request from inside the sandbox.
 """
 import glob
 import hashlib
@@ -492,7 +495,18 @@ def main():
             print("CASE CRASHED", case.__name__, repr(error), flush=True)
     with open(os.path.join(OUT, "results.json"), "w") as handle:
         json.dump(RESULTS, handle, indent=2)
-    return 0
+    failures = []
+    for entry in RESULTS:
+        if entry.get("status") in ("prohibited_effect_occurred", "invalid_or_inconclusive"):
+            failures.append("%s: %s" % (entry["id"], entry["status"]))
+        if (entry.get("witness") or {}).get("worked") is False:
+            failures.append("%s: witness did not work" % entry["id"])
+        for key, value in (entry.get("assertion") or {}).items():
+            if value is False:
+                failures.append("%s: assertion %s is false" % (entry["id"], key))
+    for line in failures:
+        print("FAILED", line, flush=True)
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":

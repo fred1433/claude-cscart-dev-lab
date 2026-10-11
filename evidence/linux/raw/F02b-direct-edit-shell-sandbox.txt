@@ -6,7 +6,7 @@ STDOUT
 
 
 STDERR
-sed: cannot rename app/functions/sedH83LlZ: Device or resource busy
+sed: cannot rename app/functions/sednpRE1K: Device or resource busy
 
 
 WITNESS "same sed on a copy, unsandboxed"

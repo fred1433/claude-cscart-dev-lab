@@ -56,5 +56,9 @@ docker network rm "$NET" > /dev/null
 # previous evidence is moved aside to a temporary folder, never deleted
 if [ -d "$OUT" ]; then mv "$OUT" "$(mktemp -d)/"; fi
 mv "$STAGE" "$OUT"
+if grep -q "RECEIVED .*/sandboxed-" "$OUT/receiver.log"; then
+  echo "FAILED: the receiver logged a request sent from inside the sandbox"; CODE=1
+fi
+grep -q "RECEIVED .*/witness-unsandboxed" "$OUT/receiver.log" || { echo "FAILED: receiver witness missing"; CODE=1; }
 echo "proofs exit code: $CODE, evidence in evidence/linux/"
 exit $CODE

@@ -1,20 +1,24 @@
 # Owner guide: one small change, start to finish
 
-For the store owner. No programming needed. Your developer sets things up once
-(see the [developer guide](developer-guide.md)); after that, every task looks
-like this.
+For the store owner, on tasks your developer has framed: which files the task
+may change, and which commands you may approve. Within that frame no
+programming is needed. A new kind of task, new files or new commands go back
+to your developer first (see the [developer guide](developer-guide.md)).
+Every framed task looks like this.
 
 ## 1. Open a task (one command)
 
-Name the task and the file(s) Claude may change. Your developer can tell you
-which file holds what you want to change.
+Name the task and the file(s) Claude may change. In this lab, the exercise is:
 
 ```
-bin/claude-task start mobile-catalog-form design/themes/<theme>/css/addons/catalog_request/styles.less
+bin/claude-task start mobile-catalog-form design/themes/custom_theme/css/addons/catalog_request/styles.less
 ```
 
-The tool records a starting point (the "baseline") and refuses files that
-touch checkout, cart, orders, prices, payments, the database or the rules.
+For your real store, your developer gives you the complete command for each
+task. The tool records a starting point (the "baseline"). It refuses paths
+your developer has marked as protected; it does not know by itself which files
+are shared with checkout. Your developer checks shared dependencies before
+approving the task's files.
 
 ## 2. Start Claude Code and check the mode
 
@@ -24,8 +28,9 @@ claude
 
 Look at the bottom of the screen. It should say **manual mode on**. If it
 says anything else, press `Shift+Tab` until it does (the kit removes auto mode
-from that cycle). In manual mode Claude asks before every change and every
-command, and you answer yes or no.
+from that cycle). In manual mode Claude asks before editing a file and before
+running a command that is not pre-approved; reading files and a few read-only
+commands (such as `git status`, `git diff`) run without asking.
 
 ## 3. Four sentences, in this order
 
@@ -34,11 +39,15 @@ command, and you answer yes or no.
 2. **"Show me the intended files and the smallest change you would make. Don't
    edit yet."** If the answer mentions a file you did not put in the task, or
    anything about checkout, stop here and ask your developer.
-3. **"Make only this change."** Claude shows each edit and asks permission.
-   Read the file name in the question before you say yes, and do the same
-   when it asks to run a command: a command can change a file too (for example
-   `sed -i ... forms.less`). The task's file list binds Claude's edit tools,
-   not commands; if a command names a file outside your task, answer no.
+3. **"Make only this change."** Claude asks permission before each step.
+   The rule for answering:
+   - **an edit**: approve it only when its file is one of the task's files;
+   - **a command**: approve it only if it is on the checklist your developer
+     gave you (a command can change files that are not in the task, and its
+     targets are not always visible in its text);
+   - **anything else, including any request to open network access**: choose
+     **No** and ask your developer;
+   - never select "don't ask again".
 4. **"Show me how to undo it."**
 
 If Claude says something was **blocked by the guard**, that is the safety
@@ -51,9 +60,11 @@ bin/claude-task diff
 ```
 
 shows what changed in the task's files, line by line (red removed, green
-added), and prints a **WARNING** line for any other file that changed or
-appeared in the folder since the task started. A WARNING means something
-outside the task moved: stop and show it to your developer. Then look
+added, including the content of new task files), and prints a **WARNING**
+line for any other tracked file that changed, or any new file that git does
+not ignore, since the task started. A WARNING means something outside the
+task moved: stop and show it to your developer. The database and ignored
+folders (such as `var/` and `images/`) are not watched. Then look
 at the dev site. After a template or style change, the dev site may still show
 the old version until its cache is cleared; your developer will tell you how
 that is done on your setup.
@@ -64,10 +75,12 @@ that is done on your setup.
   they were and prints `OK` with the same fingerprint as the starting point.
   It does not touch anything else. If something outside the task changed
   meanwhile, undo says **NOT UNDONE** with the file names and keeps the task
-  open: your developer decides what to do with those files.
+  open: your developer decides what to do with those files. Undo does not
+  cover the database or ignored folders.
 - **Keep:** `bin/claude-task finish "Catalog form fits on phones"`. It saves
-  the change on its own branch, and your developer reviews it before it goes
-  anywhere near the live shop.
+  exactly the task's files (changes, new files and deletions) in one commit
+  on the task's own branch, and nothing else; if that fails the task stays
+  open. Your developer reviews it before it goes anywhere near the live shop.
 
 ## How to stop Claude
 

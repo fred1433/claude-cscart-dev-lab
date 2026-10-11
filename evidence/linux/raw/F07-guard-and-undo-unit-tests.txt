@@ -39,16 +39,26 @@ test_read_config_local (test_guard.GuardTest.test_read_config_local) ... ok
 test_shared_stylesheet_outside_task (test_guard.GuardTest.test_shared_stylesheet_outside_task) ... ok
 test_symlink_alias (test_guard.GuardTest.test_symlink_alias) ... ok
 test_write_payment_script (test_guard.GuardTest.test_write_payment_script) ... ok
-test_fail_closed_and_bypass_lock_present (test_settings_sync.SyncTest.test_fail_closed_and_bypass_lock_present) ... ok
-test_settings_match_policy (test_settings_sync.SyncTest.test_settings_match_policy) ... ok
+test_managed_mode (test_settings_sync.AdaptedPolicyTest.test_managed_mode) ... ok
+test_project_mode (test_settings_sync.AdaptedPolicyTest.test_project_mode) ... /lab/tests/test_settings_sync.py:63: ResourceWarning: unclosed file <_io.TextIOWrapper name='/tmp/tmp8cx2rswn/settings.json' mode='r' encoding='UTF-8'>
+  deny = json.load(open(out))["permissions"]["deny"]
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_fail_closed_and_mode_locks_present (test_settings_sync.SyncTest.test_fail_closed_and_mode_locks_present) ... ok
+test_kit_settings_match_kit_policy (test_settings_sync.SyncTest.test_kit_settings_match_kit_policy) ... ok
+test_required_explicit_policy (test_settings_sync.SyncTest.test_required_explicit_policy) ... ok
+test_finish_does_not_take_files_staged_for_something_else (test_task_undo.FinishTest.test_finish_does_not_take_files_staged_for_something_else) ... ok
+test_finish_records_a_deletion (test_task_undo.FinishTest.test_finish_records_a_deletion) ... ok
+test_task_stays_open_when_commit_fails (test_task_undo.FinishTest.test_task_stays_open_when_commit_fails) ... ok
+test_refuses_protected_file_in_scope (test_task_undo.UndoMoreTest.test_refuses_protected_file_in_scope) ... ok
+test_refuses_task_on_file_with_uncommitted_changes (test_task_undo.UndoMoreTest.test_refuses_task_on_file_with_uncommitted_changes) ... ok
 test_clean_task_undo (test_task_undo.UndoTest.test_clean_task_undo) ... ok
 test_file_created_during_task_is_never_moved (test_task_undo.UndoTest.test_file_created_during_task_is_never_moved) ... ok
-test_refuses_protected_file_in_scope (test_task_undo.UndoTest.test_refuses_protected_file_in_scope) ... ok
-test_refuses_task_on_file_with_uncommitted_changes (test_task_undo.UndoTest.test_refuses_task_on_file_with_uncommitted_changes) ... ok
+test_new_task_file_content_shown_in_diff (test_task_undo.UndoTest.test_new_task_file_content_shown_in_diff) ... ok
 test_shell_write_outside_scope_is_reported_and_not_hidden (test_task_undo.UndoTest.test_shell_write_outside_scope_is_reported_and_not_hidden) ... ok
 
 ----------------------------------------------------------------------
-Ran 40 tests in 1.039s
+Ran 47 tests in 1.369s
 
 OK
 

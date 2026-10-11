@@ -97,6 +97,61 @@ class UndoTest(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.ws, "design/themes/custom_theme/css/new-file.less")))
         self.assertFalse(os.path.exists(os.path.join(self.ws, ".claude-task-trash")))
 
+    def test_new_task_file_content_shown_in_diff(self):
+        new = "design/themes/custom_theme/css/addons/catalog_request/mobile.less"
+        out = task(self.ws, "start", "with-new-file", STYLES, new)
+        self.assertEqual(out.returncode, 0, out.stdout)
+        write(self.ws, new, ".ty-catalog-request { width: auto; }\n", "w")
+        diff = task(self.ws, "diff").stdout
+        self.assertIn("+.ty-catalog-request { width: auto; }", diff)
+
+
+class FinishTest(unittest.TestCase):
+    """Keep = a commit of exactly the task's files, nothing staged elsewhere, deletions included."""
+
+    def setUp(self):
+        self.ws = new_workspace(with_prod=False)
+
+    def committed_files(self):
+        return sorted(git(self.ws, "show", "--name-status", "--format=", "HEAD").split("\n")[:-1])
+
+    def test_finish_does_not_take_files_staged_for_something_else(self):
+        write(self.ws, OTHER, "// developer change, already staged\n")
+        git(self.ws, "add", OTHER)
+        self.assertEqual(task(self.ws, "start", "mobile", STYLES).returncode, 0)
+        write(self.ws, STYLES, "/* task edit */\n")
+        out = task(self.ws, "finish", "mobile form")
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertEqual(self.committed_files(), ["M\t" + STYLES])
+        self.assertIn("M  " + OTHER, git(self.ws, "status", "--porcelain"))  # still staged, not committed
+        self.assertFalse(os.path.exists(os.path.join(self.ws, ".claude", "task.json")))
+
+    def test_finish_records_a_deletion(self):
+        self.assertEqual(task(self.ws, "start", "two-files", STYLES, OTHER).returncode, 0)
+        write(self.ws, STYLES, "/* task edit */\n")
+        os.remove(os.path.join(self.ws, OTHER))
+        out = task(self.ws, "finish", "edit one, delete one")
+        self.assertEqual(out.returncode, 0, out.stdout)
+        self.assertEqual(self.committed_files(), sorted(["D\t" + OTHER, "M\t" + STYLES]))
+        self.assertEqual(git(self.ws, "status", "--porcelain").strip(), "")
+
+    def test_task_stays_open_when_commit_fails(self):
+        hook = os.path.join(self.ws, ".git", "hooks", "pre-commit")
+        self.assertEqual(task(self.ws, "start", "mobile", STYLES).returncode, 0)
+        write(self.ws, STYLES, "/* task edit */\n")
+        with open(hook, "w") as handle:
+            handle.write("#!/bin/sh\necho refused by a pre-commit hook\nexit 1\n")
+        os.chmod(hook, 0o755)
+        out = task(self.ws, "finish", "mobile form")
+        self.assertNotEqual(out.returncode, 0)
+        self.assertIn("task stays open", out.stdout)
+        self.assertTrue(os.path.exists(os.path.join(self.ws, ".claude", "task.json")))
+
+
+class UndoMoreTest(unittest.TestCase):
+    def setUp(self):
+        self.ws = new_workspace(with_prod=False)
+
     def test_refuses_task_on_file_with_uncommitted_changes(self):
         write(self.ws, STYLES, "/* someone else's edit */\n")
         out = task(self.ws, "start", "x", STYLES)
