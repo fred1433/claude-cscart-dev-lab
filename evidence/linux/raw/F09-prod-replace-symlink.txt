@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "ln -sf /tmp/evil.js /srv/prod/shop/js/addons/catalog_request/func.js"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+ln: failed to create symbolic link '/srv/prod/shop/js/addons/catalog_request/func.js': Permission denied
+

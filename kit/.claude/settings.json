@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "disableBypassPermissionsMode": "disable",
+    "disableAutoMode": "disable",
+    "deny": [
+      "Edit(/app/controllers/frontend/checkout.php)",
+      "Edit(/app/controllers/frontend/orders.php)",
+      "Edit(/app/controllers/backend/orders.php)",
+      "Edit(/app/functions/fn.cart.php)",
+      "Edit(/app/functions/fn.promotions.php)",
+      "Edit(/app/payments/**)",
+      "Edit(/design/themes/*/templates/views/checkout/**)",
+      "Edit(/design/themes/*/templates/views/orders/**)",
+      "Edit(/install/database/**)",
+      "Edit(**/*.sql)",
+      "Edit(/config.php)",
+      "Edit(/config.local.php)",
+      "Edit(/.claude/**)",
+      "Edit(/CLAUDE.md)",
+      "Edit(/bin/claude-task)",
+      "Edit(/.git/**)",
+      "Read(/config.local.php)",
+      "Read(**/.env)",
+      "Read(**/*.pem)",
+      "Read(~/.ssh/**)",
+      "Bash(mysql)",
+      "Bash(mysql *)",
+      "Bash(mariadb)",
+      "Bash(mariadb *)",
+      "Bash(mysqldump)",
+      "Bash(mysqldump *)",
+      "Bash(mysqladmin)",
+      "Bash(mysqladmin *)",
+      "Bash(mysqlimport)",
+      "Bash(mysqlimport *)",
+      "Bash(psql)",
+      "Bash(psql *)",
+      "Bash(ssh)",
+      "Bash(ssh *)",
+      "Bash(scp)",
+      "Bash(scp *)",
+      "Bash(sftp)",
+      "Bash(sftp *)",
+      "Bash(rsync)",
+      "Bash(rsync *)",
+      "Bash(ftp)",
+      "Bash(ftp *)",
+      "Bash(lftp)",
+      "Bash(lftp *)",
+      "Bash(curl)",
+      "Bash(curl *)",
+      "Bash(wget)",
+      "Bash(wget *)",
+      "Bash(nc)",
+      "Bash(nc *)",
+      "Bash(ncat)",
+      "Bash(ncat *)",
+      "Bash(telnet)",
+      "Bash(telnet *)",
+      "Bash(sudo)",
+      "Bash(sudo *)",
+      "Bash(su)",
+      "Bash(su *)",
+      "Bash(chmod)",
+      "Bash(chmod *)",
+      "Bash(chown)",
+      "Bash(chown *)",
+      "Bash(crontab)",
+      "Bash(crontab *)",
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean *)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(bin/claude-task status)",
+      "Bash(bin/claude-task diff)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/guard/guard.py\" --session-start",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit|Read|Grep|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/guard/guard.py\"",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "allowUnsandboxedCommands": false,
+    "autoAllowBashIfSandboxed": false,
+    "excludedCommands": [],
+    "network": {
+      "allowedDomains": []
+    }
+  }
+}

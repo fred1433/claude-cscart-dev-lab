@@ -1,0 +1,11 @@
+ATTEMPT {"identity": "devuser", "route": "socket", "sql": "SELECT, DELETE on shop_dev"}
+
+EXIT 0
+
+STDOUT
+2
+1
+
+
+STDERR
+

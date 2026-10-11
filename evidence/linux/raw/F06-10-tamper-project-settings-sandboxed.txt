@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "echo x >> .claude/settings.json"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+/usr/bin/bash: line 1: .claude/settings.json: Read-only file system
+

@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "route": "tcp", "sql": "SELECT on shop_dev"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+ERROR 2002 (HY000): Can't connect to server on '127.0.0.1' (115)
+

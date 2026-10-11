@@ -1,0 +1,20 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "python3 -c \"p='app/pay'+'ments/example_gateway.php'; open(p,'a').write('// x\\n'); print('written')\""}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+OSError: [Errno 30] Read-only file system: 'app/payments/example_gateway.php'
+
+
+WITNESS "same command, unsandboxed"
+EXIT 0
+STDOUT
+written
+
+STDERR
+

@@ -1,0 +1,11 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "echo '{}' >> /usr/local/bin/claude ; mv /usr/local/bin/claude ..."}
+
+EXIT 1/1
+
+STDOUT
+
+
+STDERR
+bash: line 1: /usr/local/bin/claude: Permission denied
+mv: cannot move '/usr/local/bin/claude' to '/usr/local/bin/claude.moved': Permission denied
+

@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "curl receiver/witness-unsandboxed"}
+
+EXIT 0
+
+STDOUT
+received
+
+
+STDERR
+

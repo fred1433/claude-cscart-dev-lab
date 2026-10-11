@@ -1,0 +1,2 @@
+{"event": "SessionStart", "policy_sha256_16": "904707134598ba2b", "session": "5e01065b-b181-420b-bd48-6c9233d84d5f", "time": "2026-10-11T11:02:29-0300"}
+{"decision": "allow", "event": "PreToolUse", "input": {"file_path": "/private/tmp/cscart-lab-session-y_p94bxf/dev/app/functions/fn.cart.php"}, "policy_sha256_16": "904707134598ba2b", "reason": "read", "session": "5e01065b-b181-420b-bd48-6c9233d84d5f", "time": "2026-10-11T11:02:32-0300", "tool": "Read"}

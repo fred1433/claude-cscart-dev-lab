@@ -1,0 +1,30 @@
+diff --git a/design/themes/custom_theme/css/addons/catalog_request/styles.less b/design/themes/custom_theme/css/addons/catalog_request/styles.less
+index 9aa1501..b4439e9 100644
+--- a/design/themes/custom_theme/css/addons/catalog_request/styles.less
++++ b/design/themes/custom_theme/css/addons/catalog_request/styles.less
+@@ -44,3 +44,25 @@
+ .ty-catalog-request__buttons {
+     text-align: right;
+ }
++@media (max-width: 480px) {
++    .ty-catalog-request {
++        width: auto;
++        margin: 16px;
++        padding: 16px;
++    }
++    .ty-catalog-request__row {
++        display: block;
++    }
++    .ty-catalog-request__field,
++    .ty-catalog-request__field--wide {
++        width: auto;
++    }
++    .ty-catalog-request__field .ty-input-text,
++    .ty-catalog-request__field--wide .ty-input-text {
++        width: 100%;
++        box-sizing: border-box;
++    }
++    .ty-catalog-request__choices {
++        white-space: normal;
++    }
++}

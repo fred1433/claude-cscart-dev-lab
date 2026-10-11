@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "route": "socket", "sql": "SELECT on shop_dev"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+ERROR 2001 (HY000): Can't create UNIX socket (1)
+

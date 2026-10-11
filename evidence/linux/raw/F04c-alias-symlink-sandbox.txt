@@ -1,0 +1,18 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "echo >> design/innocent.less (symlink to fn.cart.php)"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+/usr/bin/bash: line 1: design/innocent.less: Read-only file system
+
+
+WITNESS "same append through the link, unsandboxed"
+EXIT 0
+STDOUT
+witness-ok
+
+STDERR
+

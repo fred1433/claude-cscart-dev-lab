@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "comment": "The one file to adapt. Paths are relative to the dev copy root unless they start with ~/ or /. Rebuild settings with: python3 kit/admin/build_settings.py",
+  "protected_edit": [
+    "app/controllers/frontend/checkout.php",
+    "app/controllers/frontend/orders.php",
+    "app/controllers/backend/orders.php",
+    "app/functions/fn.cart.php",
+    "app/functions/fn.promotions.php",
+    "app/payments/**",
+    "design/themes/*/templates/views/checkout/**",
+    "design/themes/*/templates/views/orders/**",
+    "install/database/**",
+    "**/*.sql",
+    "config.php",
+    "config.local.php",
+    ".claude/**",
+    "CLAUDE.md",
+    "bin/claude-task",
+    ".git/**"
+  ],
+  "secret_read": [
+    "config.local.php",
+    "**/.env",
+    "**/*.pem",
+    "~/.ssh/**"
+  ],
+  "production_roots": [
+    "../prod"
+  ],
+  "bash_denied_programs": [
+    "mysql",
+    "mariadb",
+    "mysqldump",
+    "mysqladmin",
+    "mysqlimport",
+    "psql",
+    "ssh",
+    "scp",
+    "sftp",
+    "rsync",
+    "ftp",
+    "lftp",
+    "curl",
+    "wget",
+    "nc",
+    "ncat",
+    "telnet",
+    "sudo",
+    "su",
+    "chmod",
+    "chown",
+    "crontab"
+  ],
+  "bash_denied_patterns": [
+    "\\bgit\\s+(push|remote|config|commit|switch|checkout|merge|rebase|rm|revert|reset|clean|stash|restore|add|tag|cherry-pick|am|apply|update-ref|branch\\s+-[dDmM])\\b",
+    "\\bclaude-task\\s+(start|undo|finish)\\b"
+  ],
+  "bash_denied_fragments": [
+    "app/payments",
+    "fn.cart.php",
+    "fn.promotions.php",
+    "checkout.php",
+    "orders.php",
+    "views/checkout",
+    "views/orders",
+    "install/database",
+    ".sql",
+    "config.local.php",
+    "config.php",
+    ".claude/",
+    ".ssh"
+  ]
+}

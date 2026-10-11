@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "root", "command": "write next to the policy"}
+
+EXIT 0
+
+STDOUT
+witness-ok
+
+
+STDERR
+

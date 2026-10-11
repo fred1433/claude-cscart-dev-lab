@@ -1,0 +1,201 @@
+#!/usr/bin/env python3
+"""claude-task: one task, one branch, a named baseline, and an undo that only touches the task.
+
+    bin/claude-task start <name> <file> [<file>...]   open a task on branch claude/<name>
+    bin/claude-task status                            show the open task
+    bin/claude-task diff                              what changed since the baseline
+    bin/claude-task undo                              put the task's files back, prove it by hash
+    bin/claude-task finish "<message>"                commit the task's files on its branch
+
+Run by the human, not by Claude: the guard refuses `bin/claude-task start|undo|finish`
+and git commands that change history or branches when Claude asks to run them.
+
+`diff` and `undo` look at the real state of the repository (`git status`), not
+only at the task's files. Any file changed or created since `start` outside
+the task's list is reported as a WARNING by `diff`; `undo` restores the task's
+files, leaves everything else exactly where it is (untracked files included),
+and exits with an error that names what it did NOT undo. Never uses
+`git reset --hard` or `git clean`.
+"""
+import json
+import os
+import shutil
+import subprocess
+import sys
+import time
+
+
+def git(*args, check=True):
+    result = subprocess.run(["git"] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            universal_newlines=True)
+    if check and result.returncode != 0:
+        sys.exit("git %s failed: %s" % (" ".join(args), result.stderr.strip()))
+    return result.stdout
+
+
+def root():
+    result = subprocess.run(["git", "rev-parse", "--show-toplevel"], stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, universal_newlines=True)
+    if result.returncode != 0:
+        sys.exit("This folder is not under git yet. Ask the developer to run, once:\n"
+                 "  git init && git add -A && git commit -m 'baseline before Claude Code'\n"
+                 "(with a .gitignore that leaves out var/, images/ and config.local.php).")
+    return result.stdout.strip()
+
+
+def task_file(top):
+    return os.path.join(top, ".claude", "task.json")
+
+
+def load(top):
+    path = task_file(top)
+    if not os.path.exists(path):
+        sys.exit("No task is open.")
+    with open(path) as handle:
+        return json.load(handle)
+
+
+def blob(path):
+    return git("hash-object", path).strip() if os.path.exists(path) else None
+
+
+def snapshot():
+    """Every path git reports as modified, deleted or untracked, with its content hash."""
+    out = git("status", "--porcelain", "-z", "--untracked-files=all", "--no-renames")
+    state = {}
+    for entry in out.split("\0"):
+        if len(entry) > 3:
+            path = entry[3:]
+            state[path] = blob(path) if os.path.isfile(path) else ("deleted" if not os.path.exists(path) else "dir")
+    return state
+
+
+def outside_changes(task):
+    """Paths outside the task's list whose state differs from the snapshot taken at start."""
+    before, now = task["snapshot_at_start"], snapshot()
+    files = set(task["files"])
+    changed = []
+    for path in sorted(set(before) | set(now)):
+        if path in files or path.startswith(".claude-task-trash/"):
+            continue
+        if before.get(path) != now.get(path):
+            changed.append((path, "new or changed" if path in now else "back to committed state"))
+    return changed
+
+
+def start(top, name, files):
+    if os.path.exists(task_file(top)):
+        sys.exit("A task is already open: %s. Finish or undo it first." % load(top)["name"])
+    guard = os.path.join(top, ".claude", "guard", "guard.py")
+    if subprocess.run([sys.executable, guard, "--check-scope"] + files,
+                      env=dict(os.environ, CLAUDE_PROJECT_DIR=top)).returncode != 0:
+        sys.exit("Task not opened: a file above is protected or outside the dev copy.")
+    dirty = [f for f in files if git("status", "--porcelain", "--", f).strip()]
+    if dirty:
+        sys.exit("Task not opened: these files already have uncommitted changes, so an undo could not "
+                 "tell them apart from Claude's: %s" % ", ".join(dirty))
+    task = {
+        "name": name,
+        "branch": "claude/" + name,
+        "start_branch": git("rev-parse", "--abbrev-ref", "HEAD").strip(),
+        "baseline_commit": git("rev-parse", "HEAD").strip(),
+        "files": files,
+        "baseline_blobs": {f: blob(f) for f in files},
+        "snapshot_at_start": snapshot(),
+        "started_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    git("switch", "-c", task["branch"])
+    with open(task_file(top), "w") as handle:
+        json.dump(task, handle, indent=2)
+    print("Task '%s' open on branch %s." % (name, task["branch"]))
+    print("Baseline: commit %s" % task["baseline_commit"][:12])
+    for f in files:
+        print("  may edit: %s (baseline blob %s)" % (f, (task["baseline_blobs"][f] or "new file")[:12]))
+    print("Claude's edit tools may change only these files. Any other change in the folder from now on "
+          "(a shell command, anyone) is reported by diff and undo. Existing uncommitted work is left as it is.")
+
+
+def status(top):
+    task = load(top)
+    print("Open task '%s' on %s, baseline %s, started %s" % (
+        task["name"], task["branch"], task["baseline_commit"][:12], task["started_at"]))
+    for f in task["files"]:
+        print("  %s %s" % ("changed " if blob(f) != task["baseline_blobs"][f] else "baseline", f))
+
+
+def diff(top):
+    task = load(top)
+    sys.stdout.write(git("diff", task["baseline_commit"], "--", *task["files"]))
+    for f in task["files"]:
+        if task["baseline_blobs"][f] is None and os.path.exists(f):
+            print("new task file: %s" % f)
+    for path, how in outside_changes(task):
+        print("WARNING: changed since the task started, OUTSIDE the task's files (%s): %s" % (how, path))
+
+
+def undo(top):
+    task = load(top)
+    trash = os.path.join(top, ".claude-task-trash", "%s-%s" % (task["name"], time.strftime("%Y%m%d-%H%M%S")))
+    for f in task["files"]:
+        if task["baseline_blobs"][f] is None:
+            if os.path.exists(f):
+                os.makedirs(os.path.dirname(os.path.join(trash, f)), exist_ok=True)
+                shutil.move(f, os.path.join(trash, f))
+                print("moved task file created during the task to %s" % os.path.relpath(os.path.join(trash, f), top))
+        else:
+            git("checkout", task["baseline_commit"], "--", f)
+    failed = 0
+    for f in task["files"]:
+        now, want = blob(f), task["baseline_blobs"][f]
+        ok = now == want
+        failed += not ok
+        print("%s %s: now %s, baseline %s" % ("OK  " if ok else "FAIL", f, (now or "absent")[:12], (want or "absent")[:12]))
+    if failed:
+        sys.exit("Undo incomplete: %d task file(s) differ from the baseline." % failed)
+    outside = outside_changes(task)
+    if outside:
+        for path, how in outside:
+            print("NOT UNDONE, outside the task's files (%s): %s" % (how, path))
+        sys.exit("The task's files are back to the baseline, but %d change(s) made since the task started are "
+                 "outside its file list and were left as they are (listed above). Review them with the developer; "
+                 "the task stays open until they are resolved, then run undo again." % len(outside))
+    git("switch", task["start_branch"])
+    deleted = subprocess.run(["git", "branch", "-d", task["branch"]], stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE).returncode == 0
+    os.remove(task_file(top))
+    print("Task '%s' undone. Back on %s at baseline %s%s." % (
+        task["name"], task["start_branch"], task["baseline_commit"][:12],
+        "" if deleted else " (branch %s kept: it has commits)" % task["branch"]))
+
+
+def finish(top, message):
+    task = load(top)
+    git("add", "--", *[f for f in task["files"] if os.path.exists(f)])
+    git("commit", "-m", "%s\n\nclaude-task %s, baseline %s" % (message, task["name"], task["baseline_commit"][:12]))
+    os.remove(task_file(top))
+    print("Committed on %s. Review it with the developer, then merge." % task["branch"])
+
+
+def main(argv):
+    top = root()
+    os.chdir(top)
+    exclude = os.path.join(top, ".git", "info", "exclude")
+    if os.path.exists(exclude) and ".claude-task-trash/" not in open(exclude).read():
+        with open(exclude, "a") as handle:
+            handle.write("\n.claude/task.json\n.claude-task-trash/\n")
+    if len(argv) >= 3 and argv[0] == "start":
+        return start(top, argv[1], argv[2:])
+    if argv == ["status"]:
+        return status(top)
+    if argv == ["diff"]:
+        return diff(top)
+    if argv == ["undo"]:
+        return undo(top)
+    if len(argv) == 2 and argv[0] == "finish":
+        return finish(top, argv[1])
+    sys.stdout.write(__doc__)
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

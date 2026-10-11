@@ -1,0 +1,9 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "curl https://example.com"}
+
+EXIT 6
+
+STDOUT
+000
+
+STDERR
+

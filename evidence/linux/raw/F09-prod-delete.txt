@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "rm -f /srv/prod/shop/js/addons/catalog_request/func.js"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+rm: cannot remove '/srv/prod/shop/js/addons/catalog_request/func.js': Permission denied
+

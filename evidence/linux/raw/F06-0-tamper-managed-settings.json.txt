@@ -1,0 +1,11 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "echo '{}' >> /etc/claude-code/managed-settings.json ; mv /etc/claude-code/managed-settings.json ..."}
+
+EXIT 1/1
+
+STDOUT
+
+
+STDERR
+bash: line 1: /etc/claude-code/managed-settings.json: Permission denied
+mv: cannot move '/etc/claude-code/managed-settings.json' to '/etc/claude-code/managed-settings.json.moved': Permission denied
+

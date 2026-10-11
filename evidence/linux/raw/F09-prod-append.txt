@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "echo '// dev' >> /srv/prod/shop/js/addons/catalog_request/func.js"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+bash: line 1: /srv/prod/shop/js/addons/catalog_request/func.js: Permission denied
+

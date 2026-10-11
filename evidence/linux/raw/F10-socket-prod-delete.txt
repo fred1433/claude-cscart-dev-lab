@@ -1,0 +1,14 @@
+ATTEMPT {"identity": "devuser", "route": "socket", "sql": "DELETE FROM shop_prod.lab_orders"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+--------------
+DELETE FROM shop_prod.lab_orders
+--------------
+
+ERROR 1142 (42000) at line 1: DELETE command denied to user 'shop_dev_app'@'localhost' for table `shop_prod`.`lab_orders`
+

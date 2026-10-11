@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "echo >> prod func.js"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+/usr/bin/bash: line 1: /srv/prod/shop/js/addons/catalog_request/func.js: Permission denied
+

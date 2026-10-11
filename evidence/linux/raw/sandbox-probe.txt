@@ -1,0 +1,6 @@
+{
+  "exit": 0,
+  "stdout": "sandbox-ok\n",
+  "stderr": "",
+  "seconds": 0.15
+}

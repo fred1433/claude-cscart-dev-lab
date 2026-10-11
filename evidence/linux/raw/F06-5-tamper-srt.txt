@@ -1,0 +1,11 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "echo '{}' >> /usr/local/bin/srt ; mv /usr/local/bin/srt ..."}
+
+EXIT 1/1
+
+STDOUT
+
+
+STDERR
+bash: line 1: /usr/local/bin/srt: Permission denied
+mv: cannot move '/usr/local/bin/srt' to '/usr/local/bin/srt.moved': Permission denied
+

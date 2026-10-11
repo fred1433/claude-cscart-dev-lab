@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "any command with bubblewrap missing"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+Error: Sandbox dependencies not available: bubblewrap (bwrap) not installed
+

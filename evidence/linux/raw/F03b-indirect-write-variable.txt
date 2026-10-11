@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "c=se; c=${c}d; $c -i ... fn.cart.php"}
+
+EXIT 4
+
+STDOUT
+
+
+STDERR
+sed: cannot rename app/functions/sedtfnyY5: Device or resource busy
+

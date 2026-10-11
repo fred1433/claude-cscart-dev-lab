@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog request form preview</title>
+<style>
+body { margin: 0; font: 14px/1.45 Arial, Helvetica, sans-serif; color: #24303b; background: #f3f4f6; }
+.lab-header { padding: 14px 16px; background: #24303b; color: #fff; font-weight: 600; }
+</style>
+<style>/* Form styles. SYNTHETIC FIXTURE written for this lab. */
+.ty-control-group {
+    margin-bottom: 14px;
+}
+.ty-control-group__title {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 13px;
+}
+.ty-control-group__title.cm-required:after {
+    content: " *";
+    color: #c0392b;
+}
+.ty-input-text {
+    box-sizing: border-box;
+    height: 36px;
+    padding: 6px 9px;
+    border: 1px solid #b9c0c7;
+    font-size: 14px;
+}
+.ty-btn {
+    padding: 9px 18px;
+    border: 0;
+    font-size: 14px;
+    cursor: pointer;
+}
+.ty-btn__primary {
+    background: #1f5f8b;
+    color: #ffffff;
+}
+
+/* Catalog request form. SYNTHETIC FIXTURE written for this lab.
+   Used only by templates/addons/catalog_request/blocks/catalog_request_form.tpl. */
+.ty-catalog-request {
+    width: 760px;
+    margin: 24px auto;
+    padding: 24px 28px;
+    border: 1px solid #d5d9de;
+    background: #ffffff;
+}
+.ty-catalog-request__title {
+    margin: 0 0 6px;
+    font-size: 22px;
+}
+.ty-catalog-request__intro {
+    margin: 0 0 18px;
+    color: #55606b;
+}
+.ty-catalog-request__row {
+    display: flex;
+    gap: 16px;
+}
+.ty-catalog-request__field {
+    flex: none;
+    width: 230px;
+}
+.ty-catalog-request__field--wide {
+    width: 476px;
+}
+.ty-catalog-request__field .ty-input-text {
+    width: 214px;
+}
+.ty-catalog-request__field--wide .ty-input-text {
+    width: 460px;
+}
+.ty-catalog-request__choices {
+    margin: 8px 0 18px;
+    padding: 0;
+    border: 0;
+    white-space: nowrap;
+}
+.ty-catalog-request__choices label {
+    margin-right: 22px;
+}
+.ty-catalog-request__buttons {
+    text-align: right;
+}
+@media (max-width: 480px) {
+    .ty-catalog-request {
+        width: auto;
+        margin: 16px;
+        padding: 16px;
+    }
+    .ty-catalog-request__row {
+        display: block;
+    }
+    .ty-catalog-request__field,
+    .ty-catalog-request__field--wide {
+        width: auto;
+    }
+    .ty-catalog-request__field .ty-input-text,
+    .ty-catalog-request__field--wide .ty-input-text {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .ty-catalog-request__choices {
+        white-space: normal;
+    }
+}
+</style>
+</head><body><div class="lab-header">Store header (preview)</div>
+<div class="ty-catalog-request">
+    <h3 class="ty-catalog-request__title">Request a printed catalog</h3>
+    <p class="ty-catalog-request__intro">Tell us where to send it. We mail catalogs within two business days.</p>
+    <form action="#" method="post" name="catalog_request_form" class="ty-catalog-request__form">
+        <input type="hidden" name="dispatch" value="catalog_request.send" />
+        <div class="ty-catalog-request__row">
+            <div class="ty-control-group ty-catalog-request__field">
+                <label for="cr_name" class="ty-control-group__title cm-required">Full name</label>
+                <input id="cr_name" type="text" name="request[name]" class="ty-input-text" />
+            </div>
+            <div class="ty-control-group ty-catalog-request__field">
+                <label for="cr_company" class="ty-control-group__title">Company</label>
+                <input id="cr_company" type="text" name="request[company]" class="ty-input-text" />
+            </div>
+            <div class="ty-control-group ty-catalog-request__field">
+                <label for="cr_email" class="ty-control-group__title cm-required">Email</label>
+                <input id="cr_email" type="email" name="request[email]" class="ty-input-text" />
+            </div>
+        </div>
+        <div class="ty-catalog-request__row">
+            <div class="ty-control-group ty-catalog-request__field ty-catalog-request__field--wide">
+                <label for="cr_address" class="ty-control-group__title cm-required">Mailing address</label>
+                <input id="cr_address" type="text" name="request[address]" class="ty-input-text" />
+            </div>
+            <div class="ty-control-group ty-catalog-request__field">
+                <label for="cr_zip" class="ty-control-group__title cm-required">ZIP code</label>
+                <input id="cr_zip" type="text" name="request[zip]" class="ty-input-text" />
+            </div>
+        </div>
+        <fieldset class="ty-catalog-request__choices">
+            <legend class="ty-control-group__title">What would you like?</legend>
+            <label><input type="checkbox" name="request[interests][]" value="print" /> Printed catalog</label>
+            <label><input type="checkbox" name="request[interests][]" value="flyer" /> Seasonal flyer</label>
+            <label><input type="checkbox" name="request[interests][]" value="samples" /> Sample pack</label>
+        </fieldset>
+        
+        <div class="ty-catalog-request__buttons">
+            <button class="ty-btn ty-btn__primary" type="submit">Send my request</button>
+        </div>
+    </form>
+</div>
+</body></html>

@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "mv /srv/prod/shop/js/addons/catalog_request/func.js /srv/prod/shop/js/addons/catalog_request/func.js.old"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+mv: cannot move '/srv/prod/shop/js/addons/catalog_request/func.js' to '/srv/prod/shop/js/addons/catalog_request/func.js.old': Permission denied
+

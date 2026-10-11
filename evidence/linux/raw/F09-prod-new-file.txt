@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "echo x > /srv/prod/shop/new.php"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+bash: line 1: /srv/prod/shop/new.php: Permission denied
+

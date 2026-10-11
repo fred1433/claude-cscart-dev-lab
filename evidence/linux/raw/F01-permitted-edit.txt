@@ -1,0 +1,9 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "append a media query to the task file"}
+
+EXIT 0
+
+STDOUT
+
+
+STDERR
+

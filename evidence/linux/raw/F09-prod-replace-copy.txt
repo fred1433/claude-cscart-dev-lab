@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "cp /srv/dev/shop/js/addons/catalog_request/func.js /srv/prod/shop/js/addons/catalog_request/func.js"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+cp: cannot create regular file '/srv/prod/shop/js/addons/catalog_request/func.js': Permission denied
+

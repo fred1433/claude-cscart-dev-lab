@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "produser", "command": "create and remove a file in prod"}
+
+EXIT 0
+
+STDOUT
+witness-ok
+
+
+STDERR
+

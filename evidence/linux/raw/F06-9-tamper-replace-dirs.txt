@@ -1,0 +1,13 @@
+ATTEMPT {"identity": "devuser", "sandboxed": false, "command": "rm -rf the guard folder; add a managed drop-in"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+rm: cannot remove '/opt/claude-cscart-guard/policy.json': Permission denied
+rm: cannot remove '/opt/claude-cscart-guard/guard.py': Permission denied
+rm: cannot remove '/opt/claude-cscart-guard/srt-settings.json': Permission denied
+mkdir: cannot create directory ‘/etc/claude-code/managed-settings.d’: Permission denied
+

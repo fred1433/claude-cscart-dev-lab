@@ -1,0 +1,18 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "sed -i on app/functions/fn.cart.php"}
+
+EXIT 4
+
+STDOUT
+
+
+STDERR
+sed: cannot rename app/functions/sedH83LlZ: Device or resource busy
+
+
+WITNESS "same sed on a copy, unsandboxed"
+EXIT 0
+STDOUT
+witness-ok
+
+STDERR
+

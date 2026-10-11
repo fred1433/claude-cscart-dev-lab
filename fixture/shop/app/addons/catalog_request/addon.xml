@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- SYNTHETIC FIXTURE. A small non-commerce add-on: visitors ask for a printed catalog. -->
+<addon scheme="lab">
+    <id>catalog_request</id>
+    <version>1.0</version>
+    <status>active</status>
+</addon>

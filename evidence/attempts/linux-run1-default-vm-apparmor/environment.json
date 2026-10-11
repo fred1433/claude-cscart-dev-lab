@@ -1,0 +1,124 @@
+{
+  "checks": {
+    "docker_socket_absent": true,
+    "host_home_absent": true,
+    "no_host_share_filesystem": true,
+    "no_ssh_agent": true,
+    "no_model_credentials_in_env": true,
+    "evidence_dir_mode_700_root": true
+  },
+  "uname": "Linux 9eb11028e279 6.8.0-117-generic #117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026 aarch64 GNU/Linux",
+  "os_release": "Debian GNU/Linux 12 (bookworm)",
+  "bubblewrap": "bubblewrap 0.8.0",
+  "socat": "socat version 1.7.4.4 on 06 Nov 2022 08:15:51",
+  "ripgrep": "ripgrep 13.0.0",
+  "node": "v22.23.3",
+  "sandbox_runtime": "\u251c\u2500\u2500 @anthropic-ai/sandbox-runtime@0.0.77",
+  "claude_code_cli": "2.1.296 (Claude Code)",
+  "mariadb": "mariadb  Ver 15.1 Distrib 10.11.18-MariaDB, for debian-linux-gnu (aarch64) using  EditLine wrapper",
+  "python": "Python 3.11.2",
+  "seccomp_filter_bundled": [
+    "/usr/local/lib/node_modules/@anthropic-ai/sandbox-runtime/vendor/seccomp/arm64/:",
+    "apply-seccomp",
+    "/usr/local/lib/node_modules/@anthropic-ai/sandbox-runtime/vendor/seccomp/x64/:",
+    "apply-seccomp"
+  ],
+  "root_process": {
+    "status_lines": [
+      "CapEff:\t00000000800000cb",
+      "CapBnd:\t00000000800000cb",
+      "NoNewPrivs:\t1",
+      "Seccomp:\t0",
+      "Seccomp_filters:\t0"
+    ],
+    "CapEff_decoded": "0x00000000800000cb=cap_chown,cap_dac_override,cap_fowner,cap_setgid,cap_setuid,cap_setfcap"
+  },
+  "devuser_process": {
+    "status_lines": [
+      "CapEff:\t0000000000000000",
+      "CapBnd:\t00000000800000cb",
+      "NoNewPrivs:\t1",
+      "Seccomp:\t0",
+      "Seccomp_filters:\t0"
+    ],
+    "CapEff_decoded": "0x0000000000000000="
+  },
+  "policy_files_sha256": {
+    "/opt/claude-cscart-guard/guard.py": "1b1e38612c9a7a06896410bc4329bb50e57290c252d5729fa340366b6b614b83",
+    "/opt/claude-cscart-guard/policy.json": "f2443b897dc23f74323ceeb316386f1713ed9754b1506b6da45892e9d5a78e6e",
+    "/etc/claude-code/managed-settings.json": "245a05469ec45147cb2aabbc211dff031a523638125ac4d22f066ffae1a65044",
+    "/opt/claude-cscart-guard/srt-settings.json": "fe1d06b21392a4d222b971af41a9c848d5aed2764cf4fa53a6594c1ad70742f9"
+  },
+  "policy_files_owner_mode": [
+    "root:root 755 /etc/claude-code",
+    "root:root 644 /etc/claude-code/managed-settings.json",
+    "root:root 755 /opt/claude-cscart-guard",
+    "root:root 644 /opt/claude-cscart-guard/guard.py",
+    "root:root 644 /opt/claude-cscart-guard/policy.json",
+    "root:root 644 /opt/claude-cscart-guard/srt-settings.json",
+    "root:root 777 /usr/local/bin/claude",
+    "root:root 777 /usr/local/bin/srt"
+  ],
+  "srt_settings": {
+    "filesystem": {
+      "denyRead": [
+        "/srv/dev/shop/config.local.php",
+        "/home/devuser/.ssh"
+      ],
+      "allowWrite": [
+        "/srv/dev/shop"
+      ],
+      "denyWrite": [
+        "/srv/dev/shop/.claude",
+        "/srv/dev/shop/.git",
+        "/srv/dev/shop/CLAUDE.md",
+        "/srv/dev/shop/app/controllers/backend/orders.php",
+        "/srv/dev/shop/app/controllers/frontend/checkout.php",
+        "/srv/dev/shop/app/controllers/frontend/orders.php",
+        "/srv/dev/shop/app/functions/fn.cart.php",
+        "/srv/dev/shop/app/functions/fn.promotions.php",
+        "/srv/dev/shop/app/payments",
+        "/srv/dev/shop/bin",
+        "/srv/dev/shop/bin/claude-task",
+        "/srv/dev/shop/config.local.php",
+        "/srv/dev/shop/config.php",
+        "/srv/dev/shop/design/themes/custom_theme/templates/views/checkout",
+        "/srv/dev/shop/install/database",
+        "/srv/dev/shop/install/database/demo_orders.sql",
+        "/srv/dev/shop/install/database/scheme.sql"
+      ]
+    },
+    "network": {
+      "allowedDomains": [],
+      "deniedDomains": []
+    },
+    "enableWeakerNestedSandbox": false
+  },
+  "weaker_nested_sandbox": false,
+  "mounts": [
+    "overlay overlay rw,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/260/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/254/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/251/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/250/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/229/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/225/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/221/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/217/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/214/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/213/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/210/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/209/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/208/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/207/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/206/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/205/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/261/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/261/work,nouserxattr @ /",
+    "proc proc rw @ /proc",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /dev",
+    "devpts devpts rw,gid=5,mode=620,ptmxmode=666 @ /dev/pts",
+    "sysfs sysfs ro @ /sys",
+    "cgroup2 cgroup rw,nsdelegate,memory_recursiveprot @ /sys/fs/cgroup",
+    "mqueue mqueue rw @ /dev/mqueue",
+    "tmpfs shm rw,size=65536k,inode64 @ /dev/shm",
+    "ext4 /dev/vdb1 rw @ /etc/resolv.conf",
+    "ext4 /dev/vdb1 rw @ /etc/hostname",
+    "ext4 /dev/vdb1 rw @ /etc/hosts",
+    "proc proc rw @ /proc/bus",
+    "proc proc rw @ /proc/fs",
+    "proc proc rw @ /proc/irq",
+    "proc proc rw @ /proc/sys",
+    "proc proc rw @ /proc/sysrq-trigger",
+    "tmpfs tmpfs ro,inode64 @ /proc/acpi",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /proc/interrupts",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /proc/kcore",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /proc/keys",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /proc/latency_stats",
+    "tmpfs tmpfs ro,inode64 @ /proc/scsi",
+    "tmpfs tmpfs rw,size=65536k,mode=755,inode64 @ /proc/timer_list",
+    "tmpfs tmpfs ro,inode64 @ /sys/firmware"
+  ]
+}

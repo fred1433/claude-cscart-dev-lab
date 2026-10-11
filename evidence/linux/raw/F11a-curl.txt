@@ -1,0 +1,10 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "curl -s -m 5 -o /dev/null -w 'http_code=%{http_code}\\n' -X POST -d x http://receiver:8080/sandboxed-curl"}
+
+EXIT 0
+
+STDOUT
+http_code=403
+
+
+STDERR
+

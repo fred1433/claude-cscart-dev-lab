@@ -1,0 +1,2 @@
+colima-cscartlab | Ubuntu 24.04.4 LTS | kernel 6.8.0-117-generic | ["name=apparmor","name=seccomp,profile=builtin","name=cgroupns"]
+0

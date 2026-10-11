@@ -1,0 +1,54 @@
+ATTEMPT {"identity": "devuser", "command": "python3 -m unittest discover -s tests -v"}
+
+EXIT 0
+
+STDOUT
+
+
+STDERR
+test_garbage_stdin_blocks (test_guard.FailClosedTest.test_garbage_stdin_blocks) ... ok
+test_malformed_policy_blocks (test_guard.FailClosedTest.test_malformed_policy_blocks) ... ok
+test_missing_policy_blocks (test_guard.FailClosedTest.test_missing_policy_blocks) ... ok
+test_wrong_policy_shape_blocks (test_guard.FailClosedTest.test_wrong_policy_shape_blocks) ... ok
+test_bash_cat_secret (test_guard.GuardTest.test_bash_cat_secret) ... ok
+test_bash_curl (test_guard.GuardTest.test_bash_curl) ... ok
+test_bash_git_history_and_task_commands (test_guard.GuardTest.test_bash_git_history_and_task_commands) ... ok
+test_bash_git_push (test_guard.GuardTest.test_bash_git_push) ... ok
+test_bash_mysql (test_guard.GuardTest.test_bash_mysql) ... ok
+test_bash_mysql_in_chain (test_guard.GuardTest.test_bash_mysql_in_chain) ... ok
+test_bash_prod_relative (test_guard.GuardTest.test_bash_prod_relative) ... ok
+test_bash_reset_hard (test_guard.GuardTest.test_bash_reset_hard) ... ok
+test_bash_rsync (test_guard.GuardTest.test_bash_rsync) ... ok
+test_bash_task_diff_and_status_allowed (test_guard.GuardTest.test_bash_task_diff_and_status_allowed) ... ok
+test_bash_touch_policy (test_guard.GuardTest.test_bash_touch_policy) ... ok
+test_dotdot_alias (test_guard.GuardTest.test_dotdot_alias) ... ok
+test_edit_cart_functions (test_guard.GuardTest.test_edit_cart_functions) ... ok
+test_edit_checkout_template (test_guard.GuardTest.test_edit_checkout_template) ... ok
+test_edit_in_production_copy (test_guard.GuardTest.test_edit_in_production_copy) ... ok
+test_edit_inside_task (test_guard.GuardTest.test_edit_inside_task) ... ok
+test_edit_policy (test_guard.GuardTest.test_edit_policy) ... ok
+test_edit_settings (test_guard.GuardTest.test_edit_settings) ... ok
+test_edit_sql_anywhere (test_guard.GuardTest.test_edit_sql_anywhere) ... ok
+test_edit_task_scope (test_guard.GuardTest.test_edit_task_scope) ... ok
+test_grep_config_local (test_guard.GuardTest.test_grep_config_local) ... ok
+test_known_gap_obfuscated_python_passes_guard (test_guard.GuardTest.test_known_gap_obfuscated_python_passes_guard) ... ok
+test_known_gap_shell_write_to_unprotected_file_passes_guard (test_guard.GuardTest.test_known_gap_shell_write_to_unprotected_file_passes_guard) ... ok
+test_known_gap_variable_program_name_passes_guard (test_guard.GuardTest.test_known_gap_variable_program_name_passes_guard) ... ok
+test_no_task_blocks_every_edit (test_guard.GuardTest.test_no_task_blocks_every_edit) ... ok
+test_read_config_local (test_guard.GuardTest.test_read_config_local) ... ok
+test_shared_stylesheet_outside_task (test_guard.GuardTest.test_shared_stylesheet_outside_task) ... ok
+test_symlink_alias (test_guard.GuardTest.test_symlink_alias) ... ok
+test_write_payment_script (test_guard.GuardTest.test_write_payment_script) ... ok
+test_fail_closed_and_bypass_lock_present (test_settings_sync.SyncTest.test_fail_closed_and_bypass_lock_present) ... ok
+test_settings_match_policy (test_settings_sync.SyncTest.test_settings_match_policy) ... ok
+test_clean_task_undo (test_task_undo.UndoTest.test_clean_task_undo) ... ok
+test_file_created_during_task_is_never_moved (test_task_undo.UndoTest.test_file_created_during_task_is_never_moved) ... ok
+test_refuses_protected_file_in_scope (test_task_undo.UndoTest.test_refuses_protected_file_in_scope) ... ok
+test_refuses_task_on_file_with_uncommitted_changes (test_task_undo.UndoTest.test_refuses_task_on_file_with_uncommitted_changes) ... ok
+test_shell_write_outside_scope_is_reported_and_not_hidden (test_task_undo.UndoTest.test_shell_write_outside_scope_is_reported_and_not_hidden) ... ok
+
+----------------------------------------------------------------------
+Ran 40 tests in 1.039s
+
+OK
+

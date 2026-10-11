@@ -1,0 +1,18 @@
+ATTEMPT {"identity": "devuser", "sandboxed": true, "command": "echo >> /srv/dev/prod-lookalike/func.js (devuser-owned)"}
+
+EXIT 1
+
+STDOUT
+
+
+STDERR
+/usr/bin/bash: line 1: /srv/dev/prod-lookalike/func.js: Read-only file system
+
+
+WITNESS "same append on a copy, unsandboxed"
+EXIT 0
+STDOUT
+witness-ok
+
+STDERR
+
